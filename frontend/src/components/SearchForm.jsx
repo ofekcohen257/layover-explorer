@@ -1,54 +1,96 @@
 import {useState} from 'react';
-//using usestate so i can store the values of the form inputs and update them as the user types.
-//This allows me to keep track of the user's input and use it when they submit the form.
-export default function SearchForm({onResults}) {  //
-    const [from, setFrom] = useState("");
-    const [to, setTo] = useState("");
-    const [interest, setInterest] = useState("");
-    const [minLayover, setMinLayover] = useState(0);
 
+export default function SearchForm({onResults}) {
+    const [from, setFrom] = useState("TLV");
+    const [to, setTo] = useState("NYC");
+    const [interest, setInterest] = useState("arts");
+    const [minLayoverHours, setMinLayoverHours] = useState("4");
+    const [loading, setLoading] = useState(false);
 
-    const handleSearch = async (e) => {//a variable that stores an async arrow function
-        //used for event handlers.
+    const handleSearch = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        //sends input to backend
-        const response= await fetch(
-            `http://localhost:3001/api/flights/search?from=${from}&to=${to}&interest=${interest}&minLayoverHours=${minLayover}`
-        );
-        const data = await response.json();
-        console.log("search results", data);
-
-        if (onResults) onResults(data);
+        try {
+            const response = await fetch(
+                `http://localhost:3001/api/flights/search?from=${from}&to=${to}&interest=${interest}&minLayoverHours=${minLayoverHours}`
+            );
+            if (response.ok) {
+                const data = await response.json();
+                if (onResults) onResults(data);
+            } else {
+                if (onResults) onResults({flights: []});
+            }
+        } catch (error) {
+            console.error("Search error", error);
+            if (onResults) onResults({flights: []});
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <form onSubmit={handleSearch}>
-            <input
-                type="text"
-                placeholder="Enter origin"
-                value={from}
-                onChange={(e) => setFrom(e.target.value.toUpperCase())}
-            />
-            <input
-                type="text"
-                placeholder="Enter destination"
-                value={to}
-                onChange={(e) => setTo(e.target.value.toUpperCase())}
-            />
-            <input
-                type="text"
-                placeholder="Enter interest (e.g art, nightlife, food)"
-                value={interest}
-                onChange={(e) => setInterest(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="minimum layover hours"
-                value={minLayover}
-                onChange={(e) => setMinLayover(Number(e.target.value))}
-            />
-            <button type="submit">Search</button>
-        </form>
+        <div className="card">
+            <h2>Find Your Perfect Layover</h2>
+            <p style={{marginBottom: 'var(--space-4x)'}}>
+                We'll match your interests with the best layover cities.
+            </p>
+            <form onSubmit={handleSearch}>
+                <div className="grid-2">
+                    <div>
+                        <label>Origin</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. TLV"
+                            value={from}
+                            onChange={(e) => setFrom(e.target.value.toUpperCase())}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Destination</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. NYC"
+                            value={to}
+                            onChange={(e) => setTo(e.target.value.toUpperCase())}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="grid-2" style={{marginTop: 'var(--space-2x)'}}>
+                    <div>
+                        <label>Your Interest</label>
+                        <select
+                            value={interest}
+                            onChange={(e) => setInterest(e.target.value)}
+                        >
+                            <option value="">Any</option>
+                            <option value="arts">Arts & Museums</option>
+                            <option value="nightlife">Nightlife & Clubs</option>
+                            <option value="food">Food & Dining</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Min Layover Hours</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="24"
+                            value={minLayoverHours}
+                            onChange={(e) => setMinLayoverHours(e.target.value)}
+                            required
+                        />
+                    </div>
+                </div>
+                
+                <div style={{marginTop: 'var(--space-4x)'}}>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Searching..." : "Explore Flights"}
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }

@@ -1,111 +1,183 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* 1. Color Palette */
+  /* Primary Colors */
+  --primary: #1E3A8A;
+  --secondary: #38BDF8;
+  --accent: #14B8A6;
+  
+  /* Neutral Colors */
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border-color: #E2E8F0;
+  
+  /* Text Colors */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  
+  /* Semantic Colors */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* 4. Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* 5. Spacing System (8px Grid) */
+  --space-05x: 4px;
+  --space-1x: 8px;
+  --space-2x: 16px;
+  --space-3x: 24px;
+  --space-4x: 32px;
+  --space-6x: 48px;
+  --space-8x: 64px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6x) var(--space-3x);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px; /* 6. Layout Guidelines */
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
+/* Typography Scale */
+h1 { font-size: 32px; line-height: normal; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-2x); padding-bottom: 5px; }
+h2 { font-size: 24px; line-height: normal; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-1x); padding-bottom: 3px; }
+h3 { font-size: 20px; line-height: normal; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-1x); padding-bottom: 2px; }
+p { font-size: 16px; line-height: 24px; font-weight: 400; color: var(--text-secondary); }
+.text-large { font-size: 18px; line-height: 28px; }
+.text-small { font-size: 14px; line-height: 20px; }
+.text-caption { font-size: 12px; line-height: 16px; }
+
+/* Cards & Layout */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--space-3x);
+  margin-bottom: var(--space-4x);
+}
+
+/* Forms & Inputs */
+label {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1x);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+input, select {
+  width: 100%;
+  height: 48px; /* 7. Interaction States */
+  padding: 0 var(--space-2x);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 16px;
+  margin-bottom: var(--space-3x);
+  transition: border-color 0.2s ease;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 1px var(--secondary);
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  height: 48px;
+  padding: var(--space-2x);
+  background: var(--primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  background: var(--secondary);
+}
+
+button:active {
+  background: #152C6B; /* Slightly darker than primary */
+}
+
+button:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* Utility Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2x);
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: var(--space-2x);
+  }
+}
+
+/* Badges */
+.badge-poi {
   display: inline-flex;
+  background: var(--bg-main);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: var(--space-05x) var(--space-1x);
   border-radius: 4px;
-  color: var(--text-h);
+  font-size: 12px;
+  margin-right: var(--space-1x);
+  margin-top: var(--space-1x);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.badge-score-success {
+  background: var(--success);
+  color: white;
+  padding: var(--space-05x) var(--space-2x);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.badge-score-accent {
+  background: var(--accent);
+  color: white;
+  padding: var(--space-05x) var(--space-2x);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
 }
