@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: header('Register')}"></head>
+<body>
+    <div th:replace="~{layout :: body(content=~{::content})}">
+        <div th:fragment="content">
+            <div class="auth-container" style="max-width: 520px;">
+                <div class="card">
+                    <div class="auth-header">
+                        <h2 class="auth-title">Create Account</h2>
+                        <p class="auth-subtitle">Join us to explore layover options around the world</p>
+                    </div>
+
+                    <!-- General Error Message -->
+                    <div th:if="${errorMessage}" class="alert alert-danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span th:text="${errorMessage}">Error occurred</span>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <form th:action="@{/register}" th:object="${registrationRequest}" method="post">
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" th:field="*{email}" class="form-input" placeholder="name@example.com" required>
+                            <div class="form-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" th:field="*{password}" class="form-input" placeholder="At least 6 characters" required>
+                            <div class="form-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-input" placeholder="Repeat your password" required>
+                            <div class="form-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Confirm password error</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            <i class="fa-solid fa-user-plus"></i> Register
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a th:href="@{/login}">Log in here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

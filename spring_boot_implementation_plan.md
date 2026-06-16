@@ -17,18 +17,17 @@ The current application is a Node.js/Express backend (port 3001) with a React/Vi
 > [!IMPORTANT]
 > **Project Location:** The new Spring Boot project will be created as a new directory `spring-backend/` inside the existing workspace (`layover-explorer/spring-backend/`). The old Node.js `backend/` folder will remain untouched for reference.
 
-> [!WARNING]
-> **The existing React frontend will NOT be used as the main UI.** It will be repurposed as the single allowed SPA page (the interactive flight search dashboard), served as a static resource from within the Spring Boot project. All other pages (Home, Login, Register, Profile, Search History) will be Thymeleaf server-side rendered.
+> [!NOTE]
+> **No SPA page.** The React frontend is being retired entirely. All 7 pages will be server-side rendered with Thymeleaf — no client-side routing, no React build step.
 
 ---
 
-## Open Questions
+## Confirmed Configuration
 
-> [!IMPORTANT]
-> **MySQL Credentials:** What username/password do you use for your local MySQL server? (Default assumed: `root` / empty password). I will put these in `application.properties` and you can change them.
-
-> [!IMPORTANT]
-> **Port Choice:** The Spring Boot app will run on port `8080` by default. Is this acceptable, or do you prefer another port?
+- **MySQL credentials:** `root` / `password`
+- **Server port:** `8080`
+- **Database name:** `ex4`
+- **SPA:** Removed — fully Thymeleaf SSR
 
 ---
 
@@ -241,11 +240,10 @@ spring-backend/
         │   ├── controller/
         │   │   ├── HomeController.java                  # GET / → home.html
         │   │   ├── AuthController.java                  # GET/POST /login, /register
-        │   │   ├── FlightSearchController.java          # GET /search → search.html (Thymeleaf form + results)
-        │   │   ├── ProfileController.java               # GET/POST /profile → profile.html (preferences)
-        │   │   ├── SearchHistoryController.java          # GET /history → history.html
-        │   │   ├── SavedFlightController.java           # GET /saved, POST /saved/add, POST /saved/remove
-        │   │   └── FlightApiController.java             # @RestController for the SPA page (JSON API)
+        │   │   ├── FlightSearchController.java          # GET/POST /search → search.html
+        │   │   ├── ProfileController.java               # GET/POST /profile → profile.html
+        │   │   ├── SearchHistoryController.java         # GET /history → history.html
+        │   │   └── SavedFlightController.java           # GET /saved, POST /saved/add, POST /saved/remove
         │   │
         │   └── dto/
         │       ├── FlightSearchRequest.java             # Form-binding DTO with @Valid annotations
@@ -255,8 +253,7 @@ spring-backend/
         └── resources/
             ├── application.properties                   # MySQL config, server port, session config
             ├── static/
-            │   ├── css/style.css                        # Global stylesheet
-            │   └── spa/                                 # The React SPA build output (index.html, JS, CSS)
+            │   └── css/style.css                        # Global stylesheet
             └── templates/
                 ├── layout.html                          # Thymeleaf layout (navbar, footer, shared structure)
                 ├── home.html                            # Landing page
@@ -287,10 +284,9 @@ spring-backend/
 | 5 | **Profile** | `/profile` | Yes | View/edit user preferences (min/max layover hours, interests) |
 | 6 | **Search History** | `/history` | Yes | Table of past searches with timestamps |
 | 7 | **Saved Flights** | `/saved` | Yes | List of saved/favorited flights (cart-like feature) |
-| 8 | **SPA Dashboard** | `/dashboard` | Yes | The React SPA (single allowed client-side page) served as static content |
 
 > [!TIP]
-> This gives us **7 Thymeleaf pages + 1 SPA page**, well exceeding the 5-page minimum.
+> This gives us **7 Thymeleaf pages**, well exceeding the 5-page minimum. All pages are fully server-side rendered — no SPA.
 
 ---
 
@@ -367,11 +363,10 @@ flowchart TD
 - Add session integration (`@SessionAttributes` for search state)
 - Create `error.html` for graceful error handling
 
-### Phase 6: SPA Integration + API
-- Build the React frontend (`npm run build`)
-- Copy build output to `src/main/resources/static/spa/`
-- Create `FlightApiController.java` (`@RestController`) that exposes JSON endpoints for the SPA
-- Verify the SPA works at `/dashboard`
+### Phase 6: Polish + CSS Styling
+- Add consistent CSS styling to all Thymeleaf pages
+- Add micro-interactions with minimal vanilla JS (e.g., live form feedback, loading states)
+- Ensure responsive layout across all pages
 
 ### Phase 7: Polish + Verification
 - Add CSS styling to all Thymeleaf pages (consistent design with the React version)
